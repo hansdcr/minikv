@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"math/rand"
 	"strconv"
-	"time"
 	"sync"
+	"time"
 )
 
 // go 并发编程
@@ -23,7 +23,7 @@ func genMsg(name string) <-chan string {
 	return c
 }
 
-func printMsgCorcurrent(m1	<- chan	string, m2 <-chan string, wg *sync.WaitGroup) {
+func printMsgCorcurrent(m1 <-chan string, m2 <-chan string, wg *sync.WaitGroup) {
 	go func() {
 		for {
 			fmt.Println(<-m1)
@@ -39,26 +39,30 @@ func printMsgCorcurrent(m1	<- chan	string, m2 <-chan string, wg *sync.WaitGroup)
 	}()
 }
 
-func printMsgBySelect(m1, m2 <-chan string) {
-	for {
-		select {
-		case <-m1:
-			<-m1
-		case <-m2:
-			<-m2
-		default:
-			fmt.Println("no message")
+func fanIn(m1, m2 <-chan string) chan string {
+	m := make(chan string)
+	go func() {
+		for {
+			m <- <-m1
 		}
-	}
+	}()
+
+	go func() {
+		for {
+			m <- <-m2
+		}
+	}()
+
+	return m
+}
+func printMsgBySelect(m1, m2 <-chan string) {
 }
 
 func main() {
-	var wg sync.WaitGroup
-	wg.Add(20)
 	m1 := genMsg("service1")
 	m2 := genMsg("service2")
 
-	printMsgCorcurrent(m1, m2,&wg)
+	//printMsgCorcurrent(m1, m2)
 
 	//// 下面两个for循环，虽然可以正常接收数据，但不是并发的，需要一个channel
 	//// 读完才去读另外一个channel, 可以进一步改造成并发的，使用select
@@ -70,7 +74,10 @@ func main() {
 	//	fmt.Println(<-m2)
 	//}
 
-	wg.Wait()
+	m := fanIn(m1, m2)
+	for i := 0; i < 20; i++ {
+		fmt.Println(<-m)
+	}
 	//time.Sleep(2 * time.Second)
 	fmt.Println("select")
 }
