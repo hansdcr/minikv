@@ -56,19 +56,19 @@ func fanIn(m1, m2 <-chan string) chan string {
 	return m
 }
 
-func fanInSelect(c1, c2 <-chan string) chan	string {
-	c :=make(chan string)
-	go func(){
-		for{
-			select{
-			case m := <- c1:
+func fanInSelect(c1, c2 <-chan string) chan string {
+	c := make(chan string)
+	go func() {
+		for {
+			select {
+			case m := <-c1:
 				c <- m
-			case m := <- c2:
+			case m := <-c2:
 				c <- m
 			}
 		}
 	}()
-	return	c
+	return c
 }
 
 func main() {
@@ -76,7 +76,7 @@ func main() {
 	c2 := genMsg("service2")
 
 	//m := fanIn(c1, c2)
-	c := fanInSelect(c1,c2)
+	c := fanInSelect(c1, c2)
 	for i := 0; i < 20; i++ {
 		fmt.Println(<-c)
 	}
