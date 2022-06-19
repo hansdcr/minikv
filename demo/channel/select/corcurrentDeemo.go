@@ -55,29 +55,30 @@ func fanIn(m1, m2 <-chan string) chan string {
 
 	return m
 }
-func printMsgBySelect(m1, m2 <-chan string) {
+
+func fanInSelect(c1, c2 <-chan string) chan	string {
+	c :=make(chan string)
+	go func(){
+		for{
+			select{
+			case m := <- c1:
+				c <- m
+			case m := <- c2:
+				c <- m
+			}
+		}
+	}()
+	return	c
 }
 
 func main() {
-	m1 := genMsg("service1")
-	m2 := genMsg("service2")
+	c1 := genMsg("service1")
+	c2 := genMsg("service2")
 
-	//printMsgCorcurrent(m1, m2)
-
-	//// 下面两个for循环，虽然可以正常接收数据，但不是并发的，需要一个channel
-	//// 读完才去读另外一个channel, 可以进一步改造成并发的，使用select
-	//for i := 0; i < 10; i++ {
-	//	fmt.Println(<-m1)
-	//}
-
-	//for i := 0; i < 10; i++ {
-	//	fmt.Println(<-m2)
-	//}
-
-	m := fanIn(m1, m2)
+	//m := fanIn(c1, c2)
+	c := fanInSelect(c1,c2)
 	for i := 0; i < 20; i++ {
-		fmt.Println(<-m)
+		fmt.Println(<-c)
 	}
-	//time.Sleep(2 * time.Second)
 	fmt.Println("select")
 }
