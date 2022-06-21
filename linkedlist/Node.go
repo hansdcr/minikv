@@ -1,20 +1,43 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Node struct {
-	data int
+	val  int
 	next *Node
 }
 
-func SingleLinkedList() {
-
+type LinkedList struct {
+	header *Node
+	size   int
 }
 
-func (node Node) Search(data int) {
+func NewLinkedList() *LinkedList {
+	header := &Node{
+		val:  -1,
+		next: nil,
+	}
 
+	return &LinkedList{header: header, size: 0}
+}
+
+func (linkedList *LinkedList) Append(val int) {
+	var newNode *Node = &Node{val, nil}
+	curNode := linkedList.header
+	for curNode.next != nil {
+		curNode = curNode.next
+	}
+	curNode.next = newNode
+	linkedList.size++
 }
 
 func main() {
-	fmt.Println("vim-go")
+	linkedList := NewLinkedList()
+	linkedList.Append(10)
+	linkedList.Append(20)
+	fmt.Println(linkedList.header.next)
+	fmt.Println(linkedList.header.next.next)
+	fmt.Println("hi hans!")
 }
