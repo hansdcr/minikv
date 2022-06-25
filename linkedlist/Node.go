@@ -23,7 +23,7 @@ func NewLinkedList() *LinkedList {
 	return &LinkedList{header: header, size: 0}
 }
 
-func (linkedList *LinkedList) Append(val int) {
+func (linkedList *LinkedList) AddTail(val int) {
 	var newNode *Node = &Node{val, nil}
 	curNode := linkedList.header
 	for curNode.next != nil {
@@ -33,11 +33,36 @@ func (linkedList *LinkedList) Append(val int) {
 	linkedList.size++
 }
 
+func (linkedList *LinkedList) AddHead(val int) {
+	var newNode *Node = &Node{val, nil}
+	curNode := linkedList.header
+	tmp := curNode.next
+	curNode.next = newNode
+	newNode.next = tmp
+	linkedList.size++
+}
+
+func (linkedList *LinkedList) Print() {
+	curNode := linkedList.header
+	for curNode.next != nil {
+		fmt.Println(curNode.next.val)
+		curNode = curNode.next
+	}
+}
+
 func main() {
 	linkedList := NewLinkedList()
-	linkedList.Append(10)
-	linkedList.Append(20)
-	fmt.Println(linkedList.header.next)
-	fmt.Println(linkedList.header.next.next)
+	//linkedList.AddTail(10)
+	//linkedList.AddTail(20)
+	//linkedList.AddTail(30)
+	//linkedList.AddTail(40)
+	//linkedList.Print()
+
+	linkedList.AddHead(10)
+	linkedList.AddHead(20)
+	linkedList.AddHead(30)
+	linkedList.AddHead(40)
+	linkedList.Print()
+
 	fmt.Println("hi hans!")
 }
