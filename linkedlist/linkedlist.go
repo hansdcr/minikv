@@ -86,3 +86,18 @@ func (linkedlist *LinkedList) Print() {
 	}
 	fmt.Printf(str)
 }
+
+func (linkedlist *LinkedList) Delete(data int) {
+	prev := linkedlist.header
+
+	// 0 --> 1---> 2 --->5
+	for prev.next != nil {
+		if prev.next.data == data {
+			tmp := prev.next.next
+			prev.next = tmp
+			linkedlist.size--
+			return
+		}
+		prev = prev.next
+	}
+}
