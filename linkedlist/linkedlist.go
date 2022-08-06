@@ -1,6 +1,4 @@
-package main
-
-import "fmt"
+package linkedlist
 
 type Node struct {
 	data int
@@ -61,13 +59,4 @@ func (linkedlist *LinkedList) AddBySort(data int) {
 	// 尾节点为空的情况
 	prev.next = newNode
 	linkedlist.size++
-}
-
-func main() {
-	list := NewLinkedList()
-	list.AddBySort(0)
-	list.AddBySort(2)
-	list.AddBySort(5)
-	list.AddBySort(3)
-	fmt.Println(list)
 }
