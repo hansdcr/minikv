@@ -1,8 +1,6 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 type Node struct {
 	data int
@@ -42,51 +40,34 @@ func (linkedlist *LinkedList) Add(data int) {
 	linkedlist.size++
 }
 
-// data = 3
-//nil->nil
-// nil->0->1->4->nil
 func (linkedlist *LinkedList) AddBySort(data int) {
 	newNode := NewNode(data)
 	prev := linkedlist.header
-	if prev == nil {
-		linkedlist.header = newNode
-		linkedlist.size++
-		return
-	}
 
-	for {
+	for prev.next != nil {
 		if newNode.data > prev.next.data {
 			prev = prev.next
-		}
-
-		if prev.next == nil {
-			prev.next = newNode
-			linkedlist.size++
+		} else if newNode.data == prev.next.data {
 			return
-		}
-
-		if newNode.data == prev.next.data {
-			return
-		}
-
-		if newNode.data < prev.next.data {
+		} else if newNode.data < prev.next.data {
 			tmp := prev.next
 			prev.next = newNode
 			newNode.next = tmp
 			linkedlist.size++
 			return
 		}
-
 	}
+
+	// 尾节点为空的情况
+	prev.next = newNode
+	linkedlist.size++
 }
 
 func main() {
 	list := NewLinkedList()
-	list.Add(0)
-	list.Add(1)
-	list.Add(4)
-	list.AddBySort(3)
-	list.AddBySort(1)
+	list.AddBySort(0)
+	list.AddBySort(2)
 	list.AddBySort(5)
+	list.AddBySort(3)
 	fmt.Println(list)
 }
