@@ -10,6 +10,39 @@ type linkedTestNodes struct {
 	size int
 }
 
+func TestLinkedList_Search(t *testing.T) {
+	var node = linkedTestNodes{
+		in:   []int{0, 1, 5, 3},
+		out:  []int{0, 1, 3, 5},
+		size: 4,
+	}
+
+	var list = NewLinkedList()
+	for _, i := range node.in {
+		list.AddBySort(i)
+	}
+
+	data := 3
+	if list.Search(data) != true {
+		t.Errorf("expect %v, but got %v", true, false)
+	}
+}
+
+func TestLinkedList_Print(t *testing.T) {
+	var node = linkedTestNodes{
+		in:   []int{0, 1, 5, 3},
+		out:  []int{0, 1, 3, 5},
+		size: 4,
+	}
+
+	var list = NewLinkedList()
+	for _, i := range node.in {
+		list.AddBySort(i)
+	}
+
+	list.Print()
+}
+
 func TestLinkedList_AddBySort(t *testing.T) {
 	var nodes1 = linkedTestNodes{
 		in:   []int{0, 1, 5, 3},

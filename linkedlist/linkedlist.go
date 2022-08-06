@@ -1,5 +1,10 @@
 package linkedlist
 
+import (
+	"fmt"
+	"strconv"
+)
+
 type Node struct {
 	data int
 	next *Node
@@ -59,4 +64,25 @@ func (linkedlist *LinkedList) AddBySort(data int) {
 	// 尾节点为空的情况
 	prev.next = newNode
 	linkedlist.size++
+}
+
+func (linkedlist *LinkedList) Search(data int) bool {
+	header := linkedlist.header
+	for header.next != nil {
+		if header.next.data == data {
+			return true
+		}
+		header = header.next
+	}
+	return false
+}
+
+func (linkedlist *LinkedList) Print() {
+	header := linkedlist.header
+	str := "nil"
+	for header.next != nil {
+		str = str + "--->" + strconv.Itoa(header.next.data)
+		header = header.next
+	}
+	fmt.Printf(str)
 }
