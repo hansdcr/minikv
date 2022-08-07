@@ -1,17 +1,22 @@
 package skiplist
 
 import (
+	"bytes"
 	"fmt"
-	"strconv"
 )
 
-type Node struct {
-	data int
-	next *Node
+type Entry struct {
+	Key []byte
+	Val []byte
 }
 
-func NewNode(data int) *Node {
-	return &Node{data: data, next: nil}
+type Node struct {
+	entry *Entry
+	next  *Node
+}
+
+func NewNode(data *Entry) *Node {
+	return &Node{entry: data, next: nil}
 }
 
 type LinkedList struct {
@@ -21,8 +26,8 @@ type LinkedList struct {
 
 func NewLinkedList() *LinkedList {
 	header := &Node{
-		data: -1,
-		next: nil,
+		entry: &Entry{},
+		next:  nil,
 	}
 
 	return &LinkedList{
@@ -32,8 +37,8 @@ func NewLinkedList() *LinkedList {
 }
 
 //nil->0->1->nil
-func (linkedlist *LinkedList) Add(data int) {
-	newNode := NewNode(data)
+func (linkedlist *LinkedList) Add(entry *Entry) {
+	newNode := NewNode(entry)
 	prev := linkedlist.header
 
 	for prev.next != nil {
@@ -43,16 +48,16 @@ func (linkedlist *LinkedList) Add(data int) {
 	linkedlist.size++
 }
 
-func (linkedlist *LinkedList) AddBySort(data int) {
-	newNode := NewNode(data)
+func (linkedlist *LinkedList) AddBySort(entry *Entry) {
+	newNode := NewNode(entry)
 	prev := linkedlist.header
 
 	for prev.next != nil {
-		if newNode.data > prev.next.data {
+		if Compare(entry.Key, prev.next.entry) > 0 {
 			prev = prev.next
-		} else if newNode.data == prev.next.data {
+		} else if Compare(entry.Key, prev.next.entry) == 0 {
 			return
-		} else if newNode.data < prev.next.data {
+		} else if Compare(entry.Key, prev.next.entry) < 0 {
 			tmp := prev.next
 			prev.next = newNode
 			newNode.next = tmp
@@ -66,10 +71,10 @@ func (linkedlist *LinkedList) AddBySort(data int) {
 	linkedlist.size++
 }
 
-func (linkedlist *LinkedList) Search(data int) bool {
+func (linkedlist *LinkedList) Search(key []byte) bool {
 	header := linkedlist.header
 	for header.next != nil {
-		if header.next.data == data {
+		if Compare(key, header.entry) == 0 {
 			return true
 		}
 		header = header.next
@@ -81,18 +86,18 @@ func (linkedlist *LinkedList) Print() {
 	header := linkedlist.header
 	str := "nil"
 	for header.next != nil {
-		str = str + "--->" + strconv.Itoa(header.next.data)
+		str = str + "--->" + string(header.next.entry.Key)
 		header = header.next
 	}
 	fmt.Printf(str)
 }
 
-func (linkedlist *LinkedList) Delete(data int) {
+func (linkedlist *LinkedList) Delete(key []byte) {
 	prev := linkedlist.header
 
 	// 0 --> 1---> 2 --->5
 	for prev.next != nil {
-		if prev.next.data == data {
+		if Compare(key, prev.next.entry) == 0 {
 			tmp := prev.next.next
 			prev.next = tmp
 			linkedlist.size--
@@ -100,4 +105,8 @@ func (linkedlist *LinkedList) Delete(data int) {
 		}
 		prev = prev.next
 	}
+}
+
+func Compare(key []byte, entry *Entry) int {
+	return bytes.Compare(key, entry.Key)
 }
