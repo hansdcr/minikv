@@ -45,9 +45,9 @@ func TestLinkedList_AddBySort(t *testing.T) {
 	}
 
 	list := NewLinkedList()
-	list.AddBySort(entry1)
-	list.AddBySort(entry2)
-	list.AddBySort(entry3)
+	list.Add(entry1)
+	list.Add(entry2)
+	list.Add(entry3)
 
 	list.Print()
 }
