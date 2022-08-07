@@ -36,19 +36,7 @@ func NewLinkedList() *LinkedList {
 	}
 }
 
-//nil->0->1->nil
 func (linkedlist *LinkedList) Add(entry *Entry) {
-	newNode := NewNode(entry)
-	prev := linkedlist.header
-
-	for prev.next != nil {
-		prev = prev.next
-	}
-	prev.next = newNode
-	linkedlist.size++
-}
-
-func (linkedlist *LinkedList) AddBySort(entry *Entry) {
 	newNode := NewNode(entry)
 	prev := linkedlist.header
 
