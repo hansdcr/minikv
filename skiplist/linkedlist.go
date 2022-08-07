@@ -5,6 +5,10 @@ import (
 	"fmt"
 )
 
+const (
+	defaultMaxHeight = 48
+)
+
 type Entry struct {
 	Key []byte
 	Val []byte
@@ -44,6 +48,7 @@ func (linkedlist *LinkedList) Add(entry *Entry) {
 		if Compare(entry.Key, prev.next.entry) > 0 {
 			prev = prev.next
 		} else if Compare(entry.Key, prev.next.entry) == 0 {
+			prev.next.entry.Val = entry.Val //key相等,更新值
 			return
 		} else if Compare(entry.Key, prev.next.entry) < 0 {
 			tmp := prev.next
