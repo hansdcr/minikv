@@ -44,10 +44,22 @@ func TestSkipList_Add(t *testing.T) {
 		Val: []byte{'a', 'b', 'd'},
 	}
 
+	entry4 := &Entry{
+		Key: []byte{'a', 'b', 'c', 'd', 'e'},
+		Val: []byte{'a', 'b', 'c', 'd', 'e'},
+	}
+
+	entry5 := &Entry{
+		Key: []byte{'a', 'b', 'c', 'd', 'e', 'f'},
+		Val: []byte{'a', 'b', 'c', 'd', 'e', 'f'},
+	}
+
 	skiplist := NewSkipList()
 	skiplist.Add(entry1)
 	skiplist.Add(entry2)
 	skiplist.Add(entry3)
+	skiplist.Add(entry4)
+	skiplist.Add(entry5)
 
 	skiplist.Print()
 }

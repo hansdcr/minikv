@@ -3,6 +3,7 @@ package skiplist
 import (
 	"bytes"
 	"fmt"
+	"math/rand"
 	"strconv"
 )
 
@@ -28,6 +29,7 @@ type SkipList struct {
 	levels   []*Node
 	maxLevel int
 	size     int64
+	rand     *rand.Rand
 }
 
 func NewSkipList() *SkipList {
@@ -44,14 +46,10 @@ func (skiplist *SkipList) Add(entry *Entry) {
 	// 遍历每一层
 	for i := maxLevel; i >= 0; i-- {
 		// 遍历每一层的链表
-
 		newNode := NewNode(entry)
-
 		if skiplist.levels[i] == nil {
-			skiplist.levels[i] = newNode
-			continue
+			break
 		}
-
 		prev := skiplist.levels[i]
 		for prev.next != nil {
 			if skiplist.Compare(entry.Key, prev.entry) > 0 {
@@ -68,6 +66,13 @@ func (skiplist *SkipList) Add(entry *Entry) {
 		}
 		prev.next = newNode
 	}
+
+	for i := maxLevel; i >= 0; i-- {
+		if skiplist.levels[i] == nil {
+			skiplist.levels[i] = NewNode(entry)
+		}
+	}
+
 }
 func (skiplist *SkipList) Print() {
 	maxLevel := skiplist.maxLevel
@@ -86,4 +91,19 @@ func (skiplist *SkipList) Print() {
 
 func (skiplist *SkipList) Compare(key []byte, entry *Entry) int {
 	return bytes.Compare(key, entry.Key)
+}
+
+func (list *SkipList) randLevel() int {
+	//implement me here!!!
+	// 有 1/2 的几率返回 1
+	// 有 1/4 的几率返回 2
+	// 有 1/8 的几率返回 3
+	// 直到最大层
+	for i := 0; i < list.maxLevel; i++ {
+		if list.rand.Intn(2) == 0 {
+			return i
+		}
+	}
+
+	return list.maxLevel
 }
