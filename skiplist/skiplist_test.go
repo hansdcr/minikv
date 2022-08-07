@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestCompare(t *testing.T) {
+func TestSkipList_Compare(t *testing.T) {
 	slice1 := []byte{1}
 	slice2 := []byte{0}
 
@@ -28,7 +28,7 @@ func TestCompare(t *testing.T) {
 	}
 }
 
-func TestLinkedList_Add(t *testing.T) {
+func TestSkipList_Add(t *testing.T) {
 	entry1 := &Entry{
 		Key: []byte{'a', 'b', 'c'},
 		Val: []byte{'a', 'b', 'c'},
@@ -44,10 +44,10 @@ func TestLinkedList_Add(t *testing.T) {
 		Val: []byte{'a', 'b', 'd'},
 	}
 
-	list := NewLinkedList()
-	list.Add(entry1)
-	list.Add(entry2)
-	list.Add(entry3)
+	skiplist := NewSkipList()
+	skiplist.Add(entry1)
+	skiplist.Add(entry2)
+	skiplist.Add(entry3)
 
-	list.Print()
+	skiplist.Print()
 }
