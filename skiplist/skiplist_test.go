@@ -28,7 +28,7 @@ func TestCompare(t *testing.T) {
 	}
 }
 
-func TestLinkedList_AddBySort(t *testing.T) {
+func TestLinkedList_Add(t *testing.T) {
 	entry1 := &Entry{
 		Key: []byte{'a', 'b', 'c'},
 		Val: []byte{'a', 'b', 'c'},
